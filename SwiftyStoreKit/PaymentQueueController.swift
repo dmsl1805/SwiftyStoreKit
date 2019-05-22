@@ -122,7 +122,7 @@ class PaymentQueueController: NSObject, SKPaymentTransactionObserver {
         let skPayment = SKMutablePayment(product: payment.product)
         skPayment.applicationUsername = payment.applicationUsername
         skPayment.quantity = payment.quantity
-        if #available(iOSApplicationExtension 12.2, *) {
+        if #available(iOS 12.2, *) {
             skPayment.paymentDiscount = payment.discountOffer
         }
 

@@ -65,7 +65,7 @@ extension Payment {
     }
 }
 
-@available(iOSApplicationExtension 12.2, *)
+@available(iOS 12.2, *)
 extension Payment {
     var discountOffer: SKPaymentDiscount? {
         return discount as? SKPaymentDiscount

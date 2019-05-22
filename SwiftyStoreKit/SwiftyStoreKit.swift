@@ -71,7 +71,7 @@ public class SwiftyStoreKit {
         })
     }
     
-    @available(iOSApplicationExtension 12.2, *)
+    @available(iOS 12.2, *)
     fileprivate func purchase(product: SKProduct,
                               quantity: Int,
                               atomically: Bool,
@@ -196,7 +196,7 @@ extension SwiftyStoreKit {
      *  - Parameter applicationUsername: an opaque identifier for the user’s account on your system
      *  - Parameter completion: handler for result
      */
-    @available(iOSApplicationExtension 12.2, *)
+    @available(iOS 12.2, *)
     public class func purchaseProduct(_ product: SKProduct, discountOffer: SKPaymentDiscount, quantity: Int = 1, atomically: Bool = true, applicationUsername: String = "", simulatesAskToBuyInSandbox: Bool = false, completion: @escaping (PurchaseResult) -> Void) {
         
         sharedInstance.purchase(product: product, quantity: quantity, atomically: atomically, applicationUsername: applicationUsername, simulatesAskToBuyInSandbox: simulatesAskToBuyInSandbox, discountOffer: discountOffer, completion: completion)
