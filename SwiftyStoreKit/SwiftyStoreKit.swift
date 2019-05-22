@@ -70,6 +70,20 @@ public class SwiftyStoreKit {
             completion(self.processPurchaseResult(result))
         })
     }
+    
+    @available(iOSApplicationExtension 12.2, *)
+    fileprivate func purchase(product: SKProduct,
+                              quantity: Int,
+                              atomically: Bool,
+                              applicationUsername: String = "",
+                              simulatesAskToBuyInSandbox: Bool = false,
+                              discountOffer: SKPaymentDiscount,
+                              completion: @escaping (PurchaseResult) -> Void) {
+        paymentQueueController.startPayment(Payment(product: product, quantity: quantity, atomically: atomically, applicationUsername: applicationUsername, simulatesAskToBuyInSandbox: simulatesAskToBuyInSandbox, discountOffer: discountOffer) { result in
+            
+            completion(self.processPurchaseResult(result))
+        })
+    }
 
     fileprivate func restorePurchases(atomically: Bool = true, applicationUsername: String = "", completion: @escaping (RestoreResults) -> Void) {
 
@@ -169,9 +183,23 @@ extension SwiftyStoreKit {
      *  - Parameter applicationUsername: an opaque identifier for the user’s account on your system
      *  - Parameter completion: handler for result
      */
-    public class func purchaseProduct(_ product: SKProduct, quantity: Int = 1, atomically: Bool = true, applicationUsername: String = "", simulatesAskToBuyInSandbox: Bool = false, completion: @escaping ( PurchaseResult) -> Void) {
+    public class func purchaseProduct(_ product: SKProduct, quantity: Int = 1, atomically: Bool = true, applicationUsername: String = "", simulatesAskToBuyInSandbox: Bool = false, completion: @escaping (PurchaseResult) -> Void) {
         
         sharedInstance.purchase(product: product, quantity: quantity, atomically: atomically, applicationUsername: applicationUsername, simulatesAskToBuyInSandbox: simulatesAskToBuyInSandbox, completion: completion)
+    }
+    
+    /**
+     *  Purchase a product
+     *  - Parameter product: product to be purchased
+     *  - Parameter quantity: quantity of the product to be purchased
+     *  - Parameter atomically: whether the product is purchased atomically (e.g. finishTransaction is called immediately)
+     *  - Parameter applicationUsername: an opaque identifier for the user’s account on your system
+     *  - Parameter completion: handler for result
+     */
+    @available(iOSApplicationExtension 12.2, *)
+    public class func purchaseProduct(_ product: SKProduct, discountOffer: SKPaymentDiscount, quantity: Int = 1, atomically: Bool = true, applicationUsername: String = "", simulatesAskToBuyInSandbox: Bool = false, completion: @escaping (PurchaseResult) -> Void) {
+        
+        sharedInstance.purchase(product: product, quantity: quantity, atomically: atomically, applicationUsername: applicationUsername, simulatesAskToBuyInSandbox: simulatesAskToBuyInSandbox, discountOffer: discountOffer, completion: completion)
     }
 
     /**

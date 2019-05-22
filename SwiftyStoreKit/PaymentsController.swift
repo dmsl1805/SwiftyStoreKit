@@ -26,13 +26,15 @@ import Foundation
 import StoreKit
 
 struct Payment: Hashable {
+    private let discount: Any?
+
     let product: SKProduct
     let quantity: Int
     let atomically: Bool
     let applicationUsername: String
     let simulatesAskToBuyInSandbox: Bool
     let callback: (TransactionResult) -> Void
-
+    
     func hash(into hasher: inout Hasher) {
         hasher.combine(product)
         hasher.combine(quantity)
@@ -43,6 +45,46 @@ struct Payment: Hashable {
     
     static func == (lhs: Payment, rhs: Payment) -> Bool {
         return lhs.product.productIdentifier == rhs.product.productIdentifier
+    }
+}
+
+extension Payment {
+    init(product: SKProduct,
+         quantity: Int,
+         atomically: Bool,
+         applicationUsername: String,
+         simulatesAskToBuyInSandbox: Bool,
+         callback: @escaping (TransactionResult) -> Void) {
+        self.product = product
+        self.quantity = quantity
+        self.atomically = atomically
+        self.applicationUsername = applicationUsername
+        self.simulatesAskToBuyInSandbox = simulatesAskToBuyInSandbox
+        self.callback = callback
+        discount = nil
+    }
+}
+
+@available(iOSApplicationExtension 12.2, *)
+extension Payment {
+    var discountOffer: SKPaymentDiscount? {
+        return discount as? SKPaymentDiscount
+    }
+    
+    init(product: SKProduct,
+         quantity: Int,
+         atomically: Bool,
+         applicationUsername: String,
+         simulatesAskToBuyInSandbox: Bool,
+         discountOffer: SKPaymentDiscount?,
+         callback: @escaping (TransactionResult) -> Void) {
+        self.product = product
+        self.quantity = quantity
+        self.atomically = atomically
+        self.applicationUsername = applicationUsername
+        self.simulatesAskToBuyInSandbox = simulatesAskToBuyInSandbox
+        discount = discountOffer
+        self.callback = callback
     }
 }
 
